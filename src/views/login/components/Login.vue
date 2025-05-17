@@ -131,7 +131,11 @@ onMounted(() => {
     // 强制更新视图，确保按钮正确渲染
     const loginButton = document.querySelector('.login-button');
     if (loginButton) {
+      // 添加可见性类并设置内联样式以确保按钮显示
       loginButton.classList.add('visible');
+      (loginButton as HTMLElement).style.display = 'block';
+      (loginButton as HTMLElement).style.visibility = 'visible';
+      (loginButton as HTMLElement).style.opacity = '1';
     }
   });
 });
@@ -266,5 +270,18 @@ function toOtherForm(type: "register" | "resetPwd") {
   width: 100%;
   visibility: visible !important;
   opacity: 1 !important;
+  margin-top: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+/* 确保按钮在不同状态下都可见 */
+.el-button.login-button:hover,
+.el-button.login-button:focus,
+.el-button.login-button:active,
+.el-button.login-button {
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: block !important;
 }
 </style>
