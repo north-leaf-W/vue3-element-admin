@@ -40,7 +40,22 @@ const titleToI18nMap: Record<string, string> = {
   "菜单2": "menu2",
   "个人中心": "profile",
   "我的通知": "my-notice",
-  "项目文档": "document"
+  "项目文档": "document",
+
+  "路由参数": "route-params",
+  "功能演示": "feature-demo",
+  "项目文档(外链)": "external-document",
+  "后端文档": "backend-document",
+  "移动端文档": "mobile-document",
+  "菜单一级": "menu-level-1",
+  "增删改查": "crud",
+  "列表选择器": "list-selector",
+  "富文本编辑器": "rich-text-editor",
+  "图片上传": "image-upload",
+  "字典组件": "dict-component",
+  "图标选择器": "icon-selector",
+  "拖拽组件": "drag-component",
+  "滚动文本": "scrolling-text"
 };
 
 export const usePermissionStore = defineStore("permission", () => {
