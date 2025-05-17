@@ -7,6 +7,42 @@ import MenuAPI, { type RouteVO } from "@/api/system/menu.api";
 const modules = import.meta.glob("../../views/**/**.vue");
 const Layout = () => import("@/layout/index.vue");
 
+// 中文标题到国际化标识的映射表
+const titleToI18nMap: Record<string, string> = {
+  "首页": "dashboard",
+  "系统管理": "system",
+  "用户管理": "user",
+  "角色管理": "role",
+  "菜单管理": "menu",
+  "部门管理": "dept",
+  "字典管理": "dict",
+  "配置管理": "config",
+  "通知公告": "notice",
+  "代码生成": "generator",
+  "接口文档": "swagger",
+  "Swagger文档": "swagger-ui",
+  "Knife4j文档": "knife4j-ui",
+  "平台文档": "platform",
+  "表单设计": "formGen",
+  "组件封装": "component",
+  "剪切板": "clipboard",
+  "水印": "watermark",
+  "引导页": "guide",
+  "WebSocket示例": "websocket",
+  "电子签名": "signature",
+  "多级菜单": "nested",
+  "菜单1": "menu1",
+  "菜单1-1": "menu1-1",
+  "菜单1-2": "menu1-2",
+  "菜单1-2-1": "menu1-2-1",
+  "菜单1-2-2": "menu1-2-2",
+  "菜单1-3": "menu1-3",
+  "菜单2": "menu2",
+  "个人中心": "profile",
+  "我的通知": "my-notice",
+  "项目文档": "document"
+};
+
 export const usePermissionStore = defineStore("permission", () => {
   // 储所有路由，包括静态路由和动态路由
   const routes = ref<RouteRecordRaw[]>([]);
@@ -75,6 +111,16 @@ export const usePermissionStore = defineStore("permission", () => {
 });
 
 /**
+ * 将中文标题转换为对应的国际化标识
+ * 
+ * @param title 中文标题
+ * @returns 国际化标识
+ */
+function mapTitleToI18n(title: string): string {
+  return titleToI18nMap[title] || title;
+}
+
+/**
  * 解析后端返回的路由数据并转换为 Vue Router 兼容的路由配置
  *
  * @param rawRoutes 后端返回的原始路由数据
@@ -92,6 +138,11 @@ const parseDynamicRoutes = (rawRoutes: RouteVO[]): RouteRecordRaw[] => {
         ? Layout
         : modules[`../../views/${normalizedRoute.component}.vue`] ||
           modules["../../views/error-page/404.vue"];
+    
+    // 处理标题国际化
+    if (normalizedRoute.meta?.title) {
+      normalizedRoute.meta.title = mapTitleToI18n(normalizedRoute.meta.title);
+    }
 
     // 递归解析子路由
     if (normalizedRoute.children) {
@@ -103,6 +154,7 @@ const parseDynamicRoutes = (rawRoutes: RouteVO[]): RouteRecordRaw[] => {
 
   return parsedRoutes;
 };
+
 /**
  * 在组件外使用 Pinia store 实例 @see https://pinia.vuejs.org/core-concepts/outside-component-usage.html
  */
