@@ -7,7 +7,8 @@ import router from "@/router";
 
 // 创建 axios 实例
 const service = axios.create({
-  baseURL: import.meta.env.VITE_APP_BASE_API,
+  // 直接使用明确的API地址，避免环境变量问题
+  baseURL: "https://api.youlai.tech",
   timeout: 50000,
   headers: { "Content-Type": "application/json;charset=utf-8" },
   paramsSerializer: (params) => qs.stringify(params),
@@ -24,9 +25,11 @@ service.interceptors.request.use(
     }
     
     // 调试信息：输出当前请求的baseURL和完整URL
-    console.log("当前baseURL:", import.meta.env.VITE_APP_BASE_API);
+    console.log("当前baseURL:", "https://api.youlai.tech");
     console.log("请求URL:", config.url);
-    console.log("完整请求路径:", import.meta.env.VITE_APP_BASE_API + config.url);
+    console.log("完整请求路径:", "https://api.youlai.tech" + config.url);
+    console.log("请求方法:", config.method);
+    console.log("请求头:", JSON.stringify(config.headers));
     
     return config;
   },
@@ -110,5 +113,5 @@ async function handleSessionExpired() {
   router.push("/login");
 }
 
-console.log("VITE_APP_BASE_API from import.meta.env:", import.meta.env.VITE_APP_BASE_API);
+console.log("VITE_APP_BASE_API from import.meta.env:", "https://api.youlai.tech");
 console.log("All env vars from import.meta.env:", JSON.stringify(import.meta.env)); // 打印所有 Vite 注入的环境变量
