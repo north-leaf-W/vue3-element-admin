@@ -83,54 +83,37 @@ const navbarRightClass = computed(() => {
  * 注销登录
  */
 function logout() {
-  // 创建自定义确认对话框
-  const confirmDialogDiv = document.createElement('div');
-  confirmDialogDiv.className = 'custom-confirm-dialog';
-  confirmDialogDiv.innerHTML = `
-    <div class="custom-dialog-overlay"></div>
-    <div class="custom-dialog-container">
-      <div class="custom-dialog-header">
-        <span>提示</span>
-        <span class="custom-dialog-close">&times;</span>
-      </div>
-      <div class="custom-dialog-content">
-        <div class="custom-dialog-icon">
-          <i class="el-icon-warning" style="color: #E6A23C; font-size: 24px;">⚠</i>
-        </div>
-        <div class="custom-dialog-message">确定注销并退出系统吗？</div>
-      </div>
-      <div class="custom-dialog-footer">
-        <button class="custom-dialog-cancel">取消</button>
-        <button class="custom-dialog-confirm">确定</button>
-      </div>
-    </div>
-  `;
-  
-  document.body.appendChild(confirmDialogDiv);
-  
-  // 添加事件处理
-  const overlay = confirmDialogDiv.querySelector('.custom-dialog-overlay');
-  const closeBtn = confirmDialogDiv.querySelector('.custom-dialog-close');
-  const cancelBtn = confirmDialogDiv.querySelector('.custom-dialog-cancel');
-  const confirmBtn = confirmDialogDiv.querySelector('.custom-dialog-confirm');
-  
-  // 关闭对话框函数
-  const closeDialog = () => {
-    document.body.removeChild(confirmDialogDiv);
-  };
-  
-  // 点击关闭按钮
-  closeBtn?.addEventListener('click', closeDialog);
-  
-  // 点击遮罩层关闭
-  overlay?.addEventListener('click', closeDialog);
-  
-  // 点击取消按钮
-  cancelBtn?.addEventListener('click', closeDialog);
-  
-  // 点击确认按钮
-  confirmBtn?.addEventListener('click', () => {
-    closeDialog();
+  // 使用Element Plus的消息框
+  ElMessageBox.confirm("确定注销并退出系统吗？", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+    lockScroll: false,
+    customClass: "logout-message-box",
+    distinguishCancelAndClose: true,
+    beforeClose: (action, instance, done) => {
+      // 在关闭前确保按钮可见
+      const btns = document.querySelector('.logout-message-box .el-message-box__btns');
+      if (btns) {
+        const buttons = btns.querySelectorAll('button');
+        buttons.forEach(btn => {
+          btn.style.display = 'inline-flex';
+          btn.style.visibility = 'visible';
+          btn.style.opacity = '1';
+          if (btn.classList.contains('el-button--primary')) {
+            btn.style.backgroundColor = '#409EFF';
+            btn.style.color = 'white';
+            btn.style.borderColor = '#409EFF';
+          } else {
+            btn.style.backgroundColor = 'white';
+            btn.style.color = '#606266';
+            btn.style.borderColor = '#dcdfe6';
+          }
+        });
+      }
+      done();
+    }
+  }).then(() => {
     userStore
       .logout()
       .then(() => {
