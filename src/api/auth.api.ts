@@ -1,7 +1,10 @@
 import request from "@/utils/request";
+import axios from "axios";
 
-// 使用与后端匹配的API路径格式
-const AUTH_BASE_URL = "/api/v1/auth"; 
+// 使用与后端匹配的API路径格式，不带前导斜杠
+const AUTH_BASE_URL = "api/v1/auth"; 
+// 直接API地址
+const DIRECT_API_URL = "https://api.youlai.tech";
 
 const AuthAPI = {
   /** 登录接口 */
@@ -49,14 +52,23 @@ const AuthAPI = {
     });
   },
 
-  /** 获取验证码接口 */
+  /** 获取验证码接口 - 直接使用axios访问后端API */
   getCaptcha() {
-    console.log("使用request获取验证码");
+    console.log("直接请求验证码API:", `${DIRECT_API_URL}/${AUTH_BASE_URL}/captcha`);
     
-    return request({
-      url: `${AUTH_BASE_URL}/captcha`,
-      method: "get"
-    });
+    // 直接使用axios访问完整URL，确保路径正确
+    return axios.get(`${DIRECT_API_URL}/api/v1/auth/captcha`)
+      .then(response => {
+        console.log("验证码API响应:", response);
+        if (response.data && response.data.data) {
+          return response.data.data;
+        }
+        return response.data;
+      })
+      .catch(error => {
+        console.error("验证码API请求失败:", error);
+        throw error;
+      });
   },
 };
 
