@@ -70,7 +70,7 @@
         </el-link>
       </div>
 
-      <!-- 登录按钮 - 使用自定义按钮 -->
+      <!-- 登录按钮 - 使用自定义按钮，额外添加更多明显的样式 -->
       <el-form-item>
         <button 
           class="custom-login-button" 
@@ -78,9 +78,10 @@
           @click="handleLoginSubmit"
           :disabled="loading"
           type="button"
+          style="background-color: #409EFF !important; color: white !important; font-weight: bold; font-size: 16px; border: none; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); min-height: 40px;"
         >
           <span v-if="loading" class="loading-icon"></span>
-          <span>{{ t("login.login") }}</span>
+          <span style="color: white !important; visibility: visible !important; opacity: 1 !important;">{{ t("login.login") }}</span>
         </button>
       </el-form-item>
     </el-form>
@@ -305,7 +306,7 @@ function toOtherForm(type: "register" | "resetPwd") {
   width: 100%;
   height: 40px;
   margin-top: 15px;
-  background-color: var(--el-color-primary);
+  background-color: #409EFF; /* 使用更深的蓝色 */
   color: white;
   font-size: 16px;
   border-radius: 4px;
@@ -316,7 +317,7 @@ function toOtherForm(type: "register" | "resetPwd") {
   position: relative;
   overflow: hidden;
   border: none;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .custom-login-button::before {
@@ -331,13 +332,13 @@ function toOtherForm(type: "register" | "resetPwd") {
 }
 
 .custom-login-button:hover {
-  background-color: var(--el-color-primary-light-2);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: #337ecc; /* 悬停时的深蓝色 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .custom-login-button:active {
-  background-color: var(--el-color-primary-dark-1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: #2b6cb0; /* 点击时的更深蓝色 */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   transform: translateY(1px);
 }
 
