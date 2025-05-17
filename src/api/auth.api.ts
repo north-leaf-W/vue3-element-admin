@@ -1,7 +1,7 @@
 import request from "@/utils/request";
 
-// 完全移除BASE_URL中的api前缀，因为已经在环境变量中包含了
-const AUTH_BASE_URL = "/v1/auth"; 
+// 使用与后端匹配的API路径格式
+const AUTH_BASE_URL = "/api/v1/auth"; 
 
 const AuthAPI = {
   /** 登录接口*/
@@ -43,9 +43,8 @@ const AuthAPI = {
 
   /** 获取验证码接口*/
   getCaptcha() {
-    // 调试信息
-    console.log("获取验证码API URL路径:", `${AUTH_BASE_URL}/captcha`);
-    console.log("完整路径:", import.meta.env.VITE_APP_BASE_API + `${AUTH_BASE_URL}/captcha`);
+    console.log("获取验证码，API路径:", `${AUTH_BASE_URL}/captcha`);
+    console.log("当前baseURL:", import.meta.env.VITE_APP_BASE_API);
     
     return request<any, CaptchaInfo>({
       url: `${AUTH_BASE_URL}/captcha`,
