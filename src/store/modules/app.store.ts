@@ -6,6 +6,7 @@ import en from "element-plus/es/locale/lang/en";
 import { store } from "@/store";
 import { DeviceEnum } from "@/enums/settings/device.enum";
 import { SidebarStatus } from "@/enums/settings/layout.enum";
+import { usePermissionStoreHook } from "./permission.store";
 
 export const useAppStore = defineStore("app", () => {
   // 设备类型
@@ -73,6 +74,16 @@ export const useAppStore = defineStore("app", () => {
    */
   function changeLanguage(val: string) {
     language.value = val;
+    
+    // 切换语言后重新加载菜单
+    const permissionStore = usePermissionStoreHook();
+    if (permissionStore.isRoutesLoaded) {
+      // 重新加载路由
+      permissionStore.resetRouter();
+      setTimeout(() => {
+        permissionStore.generateRoutes();
+      }, 100);
+    }
   }
   /**
    * 混合模式顶部切换
