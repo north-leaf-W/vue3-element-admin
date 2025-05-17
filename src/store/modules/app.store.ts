@@ -7,6 +7,7 @@ import { store } from "@/store";
 import { DeviceEnum } from "@/enums/settings/device.enum";
 import { SidebarStatus } from "@/enums/settings/layout.enum";
 import { usePermissionStoreHook } from "./permission.store";
+import router from "@/router";
 
 export const useAppStore = defineStore("app", () => {
   // 设备类型
@@ -80,9 +81,15 @@ export const useAppStore = defineStore("app", () => {
     if (permissionStore.isRoutesLoaded) {
       // 重新加载路由
       permissionStore.resetRouter();
-      setTimeout(() => {
-        permissionStore.generateRoutes();
-      }, 100);
+      
+      // 重新生成路由并刷新页面
+      permissionStore.generateRoutes().then(() => {
+        // 使用延时确保路由配置已完成
+        setTimeout(() => {
+          // 直接刷新页面以确保菜单显示正确
+          window.location.reload();
+        }, 100);
+      });
     }
   }
   /**
