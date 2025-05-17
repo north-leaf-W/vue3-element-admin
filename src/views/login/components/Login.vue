@@ -72,14 +72,16 @@
 
       <!-- 登录按钮 - 使用自定义按钮 -->
       <el-form-item>
-        <div 
+        <button 
           class="custom-login-button" 
           :class="{'is-loading': loading}" 
           @click="handleLoginSubmit"
+          :disabled="loading"
+          type="button"
         >
           <span v-if="loading" class="loading-icon"></span>
           <span>{{ t("login.login") }}</span>
-        </div>
+        </button>
       </el-form-item>
     </el-form>
 
@@ -311,10 +313,32 @@ function toOtherForm(type: "register" | "resetPwd") {
   transition: background-color 0.3s;
   user-select: none;
   font-weight: 500;
+  position: relative;
+  overflow: hidden;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.custom-login-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+  border-radius: 4px;
 }
 
 .custom-login-button:hover {
-  background-color: var(--el-color-primary-light-3);
+  background-color: var(--el-color-primary-light-2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.custom-login-button:active {
+  background-color: var(--el-color-primary-dark-1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transform: translateY(1px);
 }
 
 .custom-login-button.is-loading {
