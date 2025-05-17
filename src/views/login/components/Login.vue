@@ -64,7 +64,25 @@
       </el-form-item>
 
       <div class="flex-x-between w-full">
-        <el-checkbox v-model="loginFormData.rememberMe">{{ t("login.rememberMe") }}</el-checkbox>
+        <!-- 使用div和自定义样式替代el-checkbox -->
+        <div 
+          class="custom-checkbox" 
+          @click="toggleRememberMe" 
+          style="display: flex; align-items: center; cursor: pointer;"
+        >
+          <div 
+            class="checkbox-box" 
+            :class="{'checkbox-checked': loginFormData.rememberMe}"
+            style="width: 16px; height: 16px; border: 1px solid #dcdfe6; border-radius: 2px; position: relative; display: flex; align-items: center; justify-content: center;"
+          >
+            <span 
+              v-if="loginFormData.rememberMe" 
+              style="color: white; font-size: 12px; line-height: 1;"
+              class="checkbox-icon"
+            >✓</span>
+          </div>
+          <span style="margin-left: 5px;">{{ t("login.rememberMe") }}</span>
+        </div>
         <el-link type="primary" underline="never" @click="toOtherForm('resetPwd')">
           {{ t("login.forgetPassword") }}
         </el-link>
@@ -130,6 +148,15 @@ const route = useRoute();
 onMounted(() => {
   // 加载验证码
   getCaptcha();
+  
+  // 检查是否有保存的用户名
+  const rememberedUsername = localStorage.getItem('login_remember_username');
+  if (rememberedUsername) {
+    loginFormData.value.username = rememberedUsername;
+    loginFormData.value.rememberMe = true;
+    console.log('已从本地存储读取用户名:', rememberedUsername);
+  }
+  
   // 确保组件样式正确加载
   nextTick(() => {
     // 强制更新视图，确保按钮正确渲染
@@ -275,6 +302,24 @@ const emit = defineEmits(["update:modelValue"]);
 function toOtherForm(type: "register" | "resetPwd") {
   emit("update:modelValue", type);
 }
+
+// 处理"记住我"复选框变化
+function toggleRememberMe() {
+  // 切换记住我状态
+  loginFormData.value.rememberMe = !loginFormData.value.rememberMe;
+  console.log('记住我状态已切换为:', loginFormData.value.rememberMe);
+  
+  // 如果勾选"记住我"，则保存用户名到localStorage
+  if (loginFormData.value.rememberMe) {
+    if (loginFormData.value.username) {
+      localStorage.setItem('login_remember_username', loginFormData.value.username);
+      console.log('已保存用户名到本地存储');
+    }
+  } else {
+    localStorage.removeItem('login_remember_username');
+    console.log('已清除本地存储的用户名');
+  }
+}
 </script>
 
 <style scoped>
@@ -362,5 +407,37 @@ function toOtherForm(type: "register" | "resetPwd") {
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+/* 自定义复选框样式 */
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-box {
+  width: 16px;
+  height: 16px;
+  border: 1px solid #DCDFE6;
+  border-radius: 2px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.checkbox-checked {
+  background-color: #409EFF;
+  border-color: #409EFF;
+}
+
+.checkbox-icon {
+  color: white;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: bold;
 }
 </style>
