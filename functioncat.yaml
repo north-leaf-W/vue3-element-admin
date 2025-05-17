@@ -79,7 +79,7 @@ apps:
             - AUTH_TOKEN
             - NODE_ENV
 services:
-  cache:
+  store:
     type: kv_store
     envs:
       dev:
@@ -88,12 +88,12 @@ services:
         provision:
           type: kv_store_v1
           namespaces:
-            - admin-cache
+            - dailycounter
       prod:
         auths:
           - apikey
         provision:
           type: kv_store_v1
           namespaces:
-            - admin-cache
-            - admin-session 
+            - dailycounter
+            - counter2 
