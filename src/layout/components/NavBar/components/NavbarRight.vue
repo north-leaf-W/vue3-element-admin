@@ -88,6 +88,9 @@ function logout() {
     cancelButtonText: "取消",
     type: "warning",
     lockScroll: false,
+    confirmButtonClass: "custom-confirm-button",
+    cancelButtonClass: "custom-cancel-button",
+    customClass: "custom-logout-dialog"
   }).then(() => {
     userStore
       .logout()
@@ -153,5 +156,23 @@ function logout() {
 
 .dark .navbar__right > *:hover {
   color: #ccc;
+}
+
+/* 全局样式: 确保Element Plus按钮在对话框中正确显示 */
+:global(.custom-logout-dialog) {
+  :global(.el-button) {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  :global(.custom-confirm-button),
+  :global(.custom-cancel-button) {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-width: 60px;
+    margin: 0 5px;
+  }
 }
 </style>
