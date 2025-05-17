@@ -70,17 +70,16 @@
         </el-link>
       </div>
 
-      <!-- 登录按钮 - 修复显示问题 -->
+      <!-- 登录按钮 - 使用自定义按钮 -->
       <el-form-item>
-        <el-button 
-          :loading="loading" 
-          type="primary" 
-          class="w-full login-button" 
-          style="display: block !important; visibility: visible !important; opacity: 1 !important; width: 100%;"
+        <div 
+          class="custom-login-button" 
+          :class="{'is-loading': loading}" 
           @click="handleLoginSubmit"
         >
-          {{ t("login.login") }}
-        </el-button>
+          <span v-if="loading" class="loading-icon"></span>
+          <span>{{ t("login.login") }}</span>
+        </div>
       </el-form-item>
     </el-form>
 
@@ -294,5 +293,49 @@ function toOtherForm(type: "register" | "resetPwd") {
   visibility: visible !important;
   opacity: 1 !important;
   display: block !important;
+}
+
+/* 自定义登录按钮样式 */
+.custom-login-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+  margin-top: 15px;
+  background-color: var(--el-color-primary);
+  color: white;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  user-select: none;
+  font-weight: 500;
+}
+
+.custom-login-button:hover {
+  background-color: var(--el-color-primary-light-3);
+}
+
+.custom-login-button.is-loading {
+  opacity: 0.8;
+  cursor: wait;
+  pointer-events: none;
+}
+
+.custom-login-button .loading-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  border: 2px solid white;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 </style>
