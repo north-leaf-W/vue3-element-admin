@@ -2,15 +2,18 @@ system: 1.0.0
 info:
   name: vue3-element-admin
   vars:
-    ADMIN_SECRET:
+    ADMIN_SECRET: # 如果您的前端不需要这个变量，也可以考虑移除
       description: >-
         系统管理员密钥，用于访问控制和API认证
-    AUTH_TOKEN:
+    AUTH_TOKEN:   # 如果您的前端不需要这个变量，也可以考虑移除
       description: >-
         访问API所需的认证令牌
-    DB_URL:
+    DB_URL:       # 如果您的前端不需要这个变量，也可以考虑移除
       description: >-
         数据库连接地址，如果使用外部数据库
+    # 如果您仅部署前端并连接外部API，则应保留或添加 API_URL 变量
+    # API_URL:
+    #   description: "外部后端API的基础URL"
 envs:
   dev:
     branch: dev
@@ -19,17 +22,17 @@ envs:
 routes:
   main_env: prod
   main_app: frontend
-auths:
+auths: # 如果仅前端，且认证由前端直接处理或不通过此机制，也可考虑简化或移除
   apikey:
     type: api_key
     envs:
       dev:
         in: header
-        name: Authorization
+        name: Authorization # 根据实际情况调整
         value: ${{vars.AUTH_TOKEN}}
       prod:
         in: header
-        name: Authorization
+        name: Authorization # 根据实际情况调整
         value: ${{vars.AUTH_TOKEN}}
 apps:
   frontend:
@@ -51,49 +54,21 @@ apps:
         provision:
           root_path: dist
           type: nodejs18x
-  backend:
-    type: web_api
-    envs:
-      dev:
-        build:
-          root_path: ./backend
-          script: npm install
-        provision:
-          type: nodejs18x
-          root_path: ./backend
-          start_command: node server.js
-          timeout: 120
-          vars:
-            - ADMIN_SECRET
-            - AUTH_TOKEN
-            - DB_URL
-      prod:
-        build:
-          root_path: ./backend
-          script: npm install
-        provision:
-          type: nodejs18x
-          root_path: ./backend
-          start_command: node server.js
-          timeout: 120
-          vars:
-            - ADMIN_SECRET
-            - AUTH_TOKEN
-            - DB_URL
+# backend 应用定义已移除
 services:
   store:
     type: kv_store
     envs:
       dev:
         auths:
-          - apikey
+          - apikey # 确保这里的apikey与auths中定义的名称一致
         provision:
           type: kv_store_v1
           namespaces:
             - dailycounter
       prod:
         auths:
-          - apikey
+          - apikey # 确保这里的apikey与auths中定义的名称一致
         provision:
           type: kv_store_v1
           namespaces:
