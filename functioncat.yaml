@@ -1,4 +1,4 @@
-system: 1.0.0 
+system: 1.0.0
 info:
   name: vue3-element-admin
   vars:
@@ -90,12 +90,12 @@ services:
         provision:
           type: kv_store_v1
           namespaces:
-            - dailycounter
+            admin-cache: {} # 修改点
       prod:
         auths:
           - apikey
         provision:
           type: kv_store_v1
           namespaces:
-            - admin-cache
-            - user-sessions
+            admin-cache: {}   # 修改点
+            user-sessions: {} # 修改点
