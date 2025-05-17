@@ -38,14 +38,14 @@ apps:
       dev:
         build:
           root_path: .
-          script: pnpm install; pnpm run build
+          script: npm install -g pnpm && pnpm install && pnpm run build
         provision:
           root_path: dist
           type: nodejs18x
       prod:
         build:
           root_path: .
-          script: pnpm install; pnpm run build
+          script: npm install -g pnpm && pnpm install && pnpm run build
         provision:
           root_path: dist
           type: nodejs18x
@@ -55,7 +55,7 @@ apps:
       dev:
         build:
           root_path: .
-          script: pnpm install
+          script: npm install -g pnpm && pnpm install
         provision:
           type: nodejs18x
           root_path: .
@@ -68,7 +68,7 @@ apps:
       prod:
         build:
           root_path: .
-          script: pnpm install
+          script: npm install -g pnpm && pnpm install
         provision:
           type: nodejs18x
           root_path: .
