@@ -22,6 +22,12 @@ service.interceptors.request.use(
     } else {
       delete config.headers.Authorization;
     }
+    
+    // 调试信息：输出当前请求的baseURL和完整URL
+    console.log("当前baseURL:", import.meta.env.VITE_APP_BASE_API);
+    console.log("请求URL:", config.url);
+    console.log("完整请求路径:", import.meta.env.VITE_APP_BASE_API + config.url);
+    
     return config;
   },
   (error) => Promise.reject(error)
