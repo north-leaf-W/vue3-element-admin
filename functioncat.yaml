@@ -54,7 +54,6 @@ apps:
         provision:
           root_path: dist
           type: nodejs18x
-# backend 应用定义已移除
 services:
   store:
     type: kv_store
