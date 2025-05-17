@@ -90,12 +90,12 @@ services:
         provision:
           type: kv_store_v1
           namespaces:
-            admin-cache: {} # 修改点
+            - dailycounter
       prod:
         auths:
           - apikey
         provision:
           type: kv_store_v1
           namespaces:
-            admin-cache: {}   # 修改点
-            user-sessions: {} # 修改点
+            - dailycounter
+            - counter2
