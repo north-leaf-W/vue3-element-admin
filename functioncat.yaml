@@ -38,46 +38,26 @@ apps:
       dev:
         build:
           root_path: .
-          script: npm install -g pnpm && pnpm install && pnpm run build
+          script: |
+            echo '{ "preinstall": "" }' > ./temp-package.json
+            npm install -g pnpm --no-package-lock
+            INIT_CWD=/ pnpm install --shamefully-hoist
+            pnpm run build
         provision:
           root_path: dist
           type: nodejs18x
       prod:
         build:
           root_path: .
-          script: npm install -g pnpm && pnpm install && pnpm run build
+          script: |
+            echo '{ "preinstall": "" }' > ./temp-package.json
+            npm install -g pnpm --no-package-lock
+            INIT_CWD=/ pnpm install --shamefully-hoist
+            pnpm run build
         provision:
           root_path: dist
           type: nodejs18x
-  backend:
-    type: web_api
-    envs:
-      dev:
-        build:
-          root_path: .
-          script: npm install -g pnpm && pnpm install
-        provision:
-          type: nodejs18x
-          root_path: .
-          start_command: node server.js
-          timeout: 120
-          vars:
-            - API_URL
-            - AUTH_TOKEN
-            - NODE_ENV
-      prod:
-        build:
-          root_path: .
-          script: npm install -g pnpm && pnpm install
-        provision:
-          type: nodejs18x
-          root_path: .
-          start_command: node server.js
-          timeout: 120
-          vars:
-            - API_URL
-            - AUTH_TOKEN
-            - NODE_ENV
+
 services:
   store:
     type: kv_store
