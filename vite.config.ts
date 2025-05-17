@@ -21,8 +21,9 @@ const pathSrc = resolve(__dirname, "src");
 
 // Vite配置  https://cn.vitejs.dev/config
 export default defineConfig(({ mode }: ConfigEnv) => {
-  const env = loadEnv(mode, process.cwd());
+  const env = loadEnv(mode, process.cwd(), '');
   return {
+    base: env.VITE_APP_PUBLIC_PATH || '/',
     resolve: {
       alias: {
         "@": pathSrc,
@@ -42,12 +43,11 @@ export default defineConfig(({ mode }: ConfigEnv) => {
       port: +env.VITE_APP_PORT,
       open: true,
       proxy: {
-        // 代理 /dev-api 的请求
-        [env.VITE_APP_BASE_API]: {
+        // 开发环境代理，确保与您的 .env.development 中的 VITE_APP_BASE_API 对应
+        [env.VITE_APP_BASE_API_DEV || '/dev-api']: { // 假设 .env.development 中叫 VITE_APP_BASE_API_DEV
+          target: env.VITE_DEV_REQUEST_URL, // 假设 .env.development 中有后端地址变量
           changeOrigin: true,
-          // 代理目标地址：https://api.youlai.tech
-          target: env.VITE_APP_API_URL,
-          rewrite: (path) => path.replace(new RegExp("^" + env.VITE_APP_BASE_API), ""),
+          rewrite: (path) => path.replace(new RegExp(`^${env.VITE_APP_BASE_API_DEV || '/dev-api'}`), ''),
         },
       },
     },
