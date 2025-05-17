@@ -1,0 +1,99 @@
+system: 1.0.0 
+info:
+  name: vue3-element-admin
+  vars:
+    API_URL:
+      description: >-
+        后端API地址，如https://api.youlai.tech
+    AUTH_TOKEN:
+      description: >-
+        访问API所需的认证令牌
+    NODE_ENV:
+      description: >-
+        Node环境变量，用于区分开发和生产环境
+envs:
+  dev:
+    branch: dev
+  prod:
+    branch: main
+routes:
+  main_env: prod
+  main_app: admin-ui
+auths:
+  apikey:
+    type: api_key
+    envs:
+      dev:
+        in: header
+        name: Authorization
+        value: ${{vars.AUTH_TOKEN}}
+      prod:
+        in: header
+        name: Authorization
+        value: ${{vars.AUTH_TOKEN}}
+apps:
+  admin-ui:
+    type: web_frontend
+    envs:
+      dev:
+        build:
+          root_path: .
+          script: pnpm install; pnpm run build
+        provision:
+          root_path: dist
+          type: nodejs18x
+      prod:
+        build:
+          root_path: .
+          script: pnpm install; pnpm run build
+        provision:
+          root_path: dist
+          type: nodejs18x
+  admin-api:
+    type: web_api
+    envs:
+      dev:
+        build:
+          root_path: .
+          script: pnpm install
+        provision:
+          type: nodejs18x
+          root_path: .
+          start_command: node server.js
+          timeout: 120
+          vars:
+            - API_URL
+            - AUTH_TOKEN
+            - NODE_ENV
+      prod:
+        build:
+          root_path: .
+          script: pnpm install
+        provision:
+          type: nodejs18x
+          root_path: .
+          start_command: node server.js
+          timeout: 120
+          vars:
+            - API_URL
+            - AUTH_TOKEN
+            - NODE_ENV
+services:
+  cache:
+    type: kv_store
+    envs:
+      dev:
+        auths:
+          - apikey
+        provision:
+          type: kv_store_v1
+          namespaces:
+            - admin-cache
+      prod:
+        auths:
+          - apikey
+        provision:
+          type: kv_store_v1
+          namespaces:
+            - admin-cache
+            - admin-session 
