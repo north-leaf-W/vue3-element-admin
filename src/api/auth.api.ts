@@ -3,42 +3,76 @@ import axios from "axios";
 
 // 使用与后端匹配的API路径格式
 const AUTH_BASE_URL = "/api/v1/auth"; 
+// 直接访问后端API的基础URL
+const DIRECT_API_URL = "https://api.youlai.tech";
 
 const AuthAPI = {
-  /** 登录接口*/
+  /** 登录接口 - 直接使用完整URL访问后端API */
   login(data: LoginFormData) {
     const formData = new FormData();
     formData.append("username", data.username);
     formData.append("password", data.password);
     formData.append("captchaKey", data.captchaKey);
     formData.append("captchaCode", data.captchaCode);
-    return request<any, LoginResult>({
-      url: `${AUTH_BASE_URL}/login`,
-      method: "post",
-      data: formData,
+    
+    console.log("直接请求登录API");
+    
+    // 绕过环境变量和项目配置，直接访问后端API
+    return axios.post(`${DIRECT_API_URL}/api/v1/auth/login`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
+    })
+    .then(response => {
+      console.log("登录API响应:", response.data);
+      // 适配API响应结构
+      if (response.data && response.data.data) {
+        return response.data.data;
+      }
+      return response.data;
+    })
+    .catch(error => {
+      console.error("登录API请求失败:", error);
+      throw error;
     });
   },
 
   /** 刷新 token 接口*/
   refreshToken(refreshToken: string) {
-    return request<any, LoginResult>({
-      url: `${AUTH_BASE_URL}/refresh-token`,
-      method: "post",
+    console.log("刷新token, 直接请求API");
+    
+    return axios.post(`${DIRECT_API_URL}/api/v1/auth/refresh-token`, null, {
       params: { refreshToken: refreshToken },
       headers: {
         Authorization: "no-auth",
       },
+    })
+    .then(response => {
+      if (response.data && response.data.data) {
+        return response.data.data;
+      }
+      return response.data;
+    })
+    .catch(error => {
+      console.error("刷新Token失败:", error);
+      throw error;
     });
   },
 
   /** 注销登录接口 */
   logout() {
-    return request({
-      url: `${AUTH_BASE_URL}/logout`,
-      method: "delete",
+    console.log("注销登录, 直接请求API");
+    
+    return axios.delete(`${DIRECT_API_URL}/api/v1/auth/logout`)
+    .then(response => {
+      if (response.data && response.data.data) {
+        return response.data.data;
+      }
+      return response.data;
+    })
+    .catch(error => {
+      console.error("注销登录失败:", error);
+      throw error;
     });
   },
 
@@ -47,7 +81,7 @@ const AuthAPI = {
     console.log("直接请求后端验证码API");
     
     // 绕过环境变量和项目配置，直接访问后端API
-    return axios.get("https://api.youlai.tech/api/v1/auth/captcha")
+    return axios.get(`${DIRECT_API_URL}/api/v1/auth/captcha`)
       .then(response => {
         console.log("验证码API响应:", response.data);
         // 适配API响应结构
