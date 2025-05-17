@@ -1,4 +1,5 @@
 import request from "@/utils/request";
+import axios from "axios";
 
 // 使用与后端匹配的API路径格式
 const AUTH_BASE_URL = "/api/v1/auth"; 
@@ -41,15 +42,24 @@ const AuthAPI = {
     });
   },
 
-  /** 获取验证码接口*/
+  /** 获取验证码接口 - 直接使用完整URL访问后端API */
   getCaptcha() {
-    console.log("获取验证码，API路径:", `${AUTH_BASE_URL}/captcha`);
-    console.log("当前baseURL:", import.meta.env.VITE_APP_BASE_API);
+    console.log("直接请求后端验证码API");
     
-    return request<any, CaptchaInfo>({
-      url: `${AUTH_BASE_URL}/captcha`,
-      method: "get",
-    });
+    // 绕过环境变量和项目配置，直接访问后端API
+    return axios.get("https://api.youlai.tech/api/v1/auth/captcha")
+      .then(response => {
+        console.log("验证码API响应:", response.data);
+        // 适配API响应结构
+        if (response.data && response.data.data) {
+          return response.data.data;
+        }
+        return response.data;
+      })
+      .catch(error => {
+        console.error("验证码API请求失败:", error);
+        throw error;
+      });
   },
 };
 
