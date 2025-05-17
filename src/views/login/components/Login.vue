@@ -70,9 +70,14 @@
         </el-link>
       </div>
 
-      <!-- 登录按钮 -->
+      <!-- 登录按钮 - 修复显示问题 -->
       <el-form-item>
-        <el-button :loading="loading" type="primary" class="w-full" @click="handleLoginSubmit">
+        <el-button 
+          :loading="loading" 
+          type="primary" 
+          class="w-full login-button" 
+          @click="handleLoginSubmit"
+        >
           {{ t("login.login") }}
         </el-button>
       </el-form-item>
@@ -118,7 +123,18 @@ const { t } = useI18n();
 const userStore = useUserStore();
 const route = useRoute();
 
-onMounted(() => getCaptcha());
+onMounted(() => {
+  // 加载验证码
+  getCaptcha();
+  // 确保组件样式正确加载
+  nextTick(() => {
+    // 强制更新视图，确保按钮正确渲染
+    const loginButton = document.querySelector('.login-button');
+    if (loginButton) {
+      loginButton.classList.add('visible');
+    }
+  });
+});
 
 const loginFormRef = ref<FormInstance>();
 const loading = ref(false); // 按钮 loading 状态
@@ -243,3 +259,12 @@ function toOtherForm(type: "register" | "resetPwd") {
   emit("update:modelValue", type);
 }
 </script>
+
+<style scoped>
+.login-button {
+  display: block !important;
+  width: 100%;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+</style>
