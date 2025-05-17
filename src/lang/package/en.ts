@@ -33,6 +33,20 @@ export default {
     "menu1-2-2": "Menu 1-2-2",
     "menu1-3": "Menu 1-3",
     menu2: "Menu 2",
+    "route-params": "Route Parameters",
+    "feature-demo": "Feature Demo",
+    "external-document": "Documentation (External)",
+    "backend-document": "Backend Document",
+    "mobile-document": "Mobile Document",
+    "menu-level-1": "Menu Level 1",
+    "crud": "CRUD",
+    "list-selector": "List Selector",
+    "rich-text-editor": "Rich Text Editor",
+    "image-upload": "Image Upload",
+    "dict-component": "Dictionary Component",
+    "icon-selector": "Icon Selector",
+    "drag-component": "Drag Component",
+    "scrolling-text": "Scrolling Text"
   },
   // 登录页面国际化
   login: {
