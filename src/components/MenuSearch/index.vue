@@ -13,7 +13,7 @@
           ref="searchInputRef"
           v-model="searchKeyword"
           size="large"
-          placeholder="输入菜单名称关键字搜索"
+          :placeholder="t('menuSearch.inputPlaceholder')"
           clearable
           @keyup.enter="selectActiveResult"
           @input="updateSearchResults"
@@ -32,7 +32,7 @@
         <template v-if="searchKeyword === '' && searchHistory.length > 0">
           <div class="search-history">
             <div class="search-history__title">
-              搜索历史
+              {{ t('menuSearch.searchHistory') }}
               <el-button
                 type="primary"
                 text
@@ -88,18 +88,18 @@
 
         <!-- 无搜索历史显示 -->
         <div v-if="searchKeyword === '' && searchHistory.length === 0" class="no-history">
-          <p class="no-history__text">没有搜索历史</p>
+          <p class="no-history__text">{{ t('menuSearch.noHistory') }}</p>
         </div>
       </div>
 
       <template #footer>
         <div class="dialog-footer">
           <div class="ctrl-k-hint">
-            <span class="ctrl-k-text">Ctrl+K 快速打开</span>
+            <span class="ctrl-k-text">{{ t('menuSearch.quickOpen') }}</span>
           </div>
           <div class="shortcuts-group">
             <div class="key-box">
-              <div class="key-btn">选择</div>
+              <div class="key-btn">{{ t('menuSearch.select') }}</div>
             </div>
             <div class="arrow-box">
               <div class="arrow-up-down">
@@ -110,11 +110,11 @@
                   <div class="i-svg:down" />
                 </div>
               </div>
-              <span class="key-text">切换</span>
+              <span class="key-text">{{ t('menuSearch.switch') }}</span>
             </div>
             <div class="key-box">
               <div class="key-btn esc-btn">ESC</div>
-              <span class="key-text">关闭</span>
+              <span class="key-text">{{ t('menuSearch.close') }}</span>
             </div>
           </div>
         </div>
