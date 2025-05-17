@@ -103,3 +103,6 @@ async function handleSessionExpired() {
   await useUserStoreHook().clearSessionAndCache();
   router.push("/login");
 }
+
+console.log("VITE_APP_BASE_API from import.meta.env:", import.meta.env.VITE_APP_BASE_API);
+console.log("All env vars from import.meta.env:", JSON.stringify(import.meta.env)); // 打印所有 Vite 注入的环境变量
