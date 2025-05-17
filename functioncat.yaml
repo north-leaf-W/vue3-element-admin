@@ -3,10 +3,11 @@
       name: vue3-element-admin
       vars:
         VITE_APP_BASE_API:
-          description: "后端API的完整基础URL (由部署平台的环境变量设置提供实际值)"
+          description: "后端API的完整基础URL"
+          value: "https://api.youlai.tech"
         NODE_ENV:
           description: "Node.js 运行环境"
-          value: "production" # 可以直接给个默认值
+          value: "production"
     envs:
       dev:
         branch: dev
@@ -19,16 +20,16 @@
       frontend:
         type: web_frontend
         envs:
-          dev: # dev 环境通常用于本地开发，其构建和环境变量处理可能不同
+          dev:
             build:
               root_path: .
               before_script: NODE_VERSION=20
-              script: pnpm install --no-frozen-lockfile; pnpm build # 或者 pnpm dev 如果只是为了开发服务器
+              script: pnpm install --no-frozen-lockfile; pnpm build
             provision:
-              root_path: dist # 或者不 provision 如果 dev 只是本地运行
+              root_path: dist
               type: nodejs18x
               vars:
-                - VITE_APP_BASE_API # 确保dev环境也能拿到这个变量（如果需要）
+                - VITE_APP_BASE_API
                 - NODE_ENV
           prod:
             build:
