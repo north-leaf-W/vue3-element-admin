@@ -88,12 +88,12 @@ services:
         provision:
           type: kv_store_v1
           namespaces:
-            - admin-cache
+            admin-cache: {}
       prod:
         auths:
           - apikey
         provision:
           type: kv_store_v1
           namespaces:
-            - admin-cache
-            - admin-session 
+            admin-cache: {}
+            admin-session: {} 
