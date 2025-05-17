@@ -8,9 +8,6 @@ info:
     AUTH_TOKEN:
       description: >-
         访问API所需的认证令牌
-    NODE_ENV:
-      description: >-
-        Node环境变量，用于区分开发和生产环境
 envs:
   dev:
     branch: dev
@@ -38,38 +35,19 @@ apps:
       dev:
         build:
           root_path: .
-          script: |
-            # 安装pnpm
-            npm install -g pnpm --no-package-lock
-            # 临时修改package.json删除preinstall钩子
-            cp package.json package.json.bak
-            sed -i 's/"preinstall": "npx only-allow pnpm"/"preinstall": ""/' package.json
-            # 使用pnpm安装并构建
-            pnpm install --no-frozen-lockfile
-            pnpm run build
-            # 恢复package.json
-            mv package.json.bak package.json || true
+          before_script: NODE_VERSION=20
+          script: pnpm install; pnpm build
         provision:
           root_path: dist
           type: nodejs18x
       prod:
         build:
           root_path: .
-          script: |
-            # 安装pnpm
-            npm install -g pnpm --no-package-lock
-            # 临时修改package.json删除preinstall钩子
-            cp package.json package.json.bak
-            sed -i 's/"preinstall": "npx only-allow pnpm"/"preinstall": ""/' package.json
-            # 使用pnpm安装并构建
-            pnpm install --no-frozen-lockfile
-            pnpm run build
-            # 恢复package.json
-            mv package.json.bak package.json || true
+          before_script: NODE_VERSION=20
+          script: pnpm install; pnpm build
         provision:
           root_path: dist
           type: nodejs18x
-
 services:
   store:
     type: kv_store
