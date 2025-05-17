@@ -2,12 +2,15 @@ system: 1.0.0
 info:
   name: vue3-element-admin
   vars:
-    API_URL:
+    ADMIN_SECRET:
       description: >-
-        后端API地址，如https://api.youlai.tech
+        系统管理员密钥，用于访问控制和API认证
     AUTH_TOKEN:
       description: >-
         访问API所需的认证令牌
+    DB_URL:
+      description: >-
+        数据库连接地址，如果使用外部数据库
 envs:
   dev:
     branch: dev
@@ -48,6 +51,35 @@ apps:
         provision:
           root_path: dist
           type: nodejs18x
+  backend:
+    type: web_api
+    envs:
+      dev:
+        build:
+          root_path: ./backend
+          script: npm install
+        provision:
+          type: nodejs18x
+          root_path: ./backend
+          start_command: node server.js
+          timeout: 120
+          vars:
+            - ADMIN_SECRET
+            - AUTH_TOKEN
+            - DB_URL
+      prod:
+        build:
+          root_path: ./backend
+          script: npm install
+        provision:
+          type: nodejs18x
+          root_path: ./backend
+          start_command: node server.js
+          timeout: 120
+          vars:
+            - ADMIN_SECRET
+            - AUTH_TOKEN
+            - DB_URL
 services:
   store:
     type: kv_store
@@ -65,5 +97,5 @@ services:
         provision:
           type: kv_store_v1
           namespaces:
-            - dailycounter
-            - counter2 
+            - admin-cache
+            - user-sessions
