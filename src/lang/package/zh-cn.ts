@@ -33,6 +33,20 @@ export default {
     "menu1-2-2": "菜单1-2-2",
     "menu1-3": "菜单1-3",
     menu2: "菜单2",
+    "route-params": "路由参数",
+    "feature-demo": "功能演示",
+    "external-document": "项目文档(外链)",
+    "backend-document": "后端文档",
+    "mobile-document": "移动端文档",
+    "menu-level-1": "菜单一级",
+    "crud": "增删改查",
+    "list-selector": "列表选择器",
+    "rich-text-editor": "富文本编辑器",
+    "image-upload": "图片上传",
+    "dict-component": "字典组件",
+    "icon-selector": "图标选择器",
+    "drag-component": "拖拽组件",
+    "scrolling-text": "滚动文本"
   },
   // 登录页面国际化
   login: {
