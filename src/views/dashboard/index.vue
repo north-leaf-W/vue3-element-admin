@@ -13,7 +13,7 @@
           />
           <div class="ml-5">
             <p>{{ greetings }}</p>
-            <p class="text-sm text-gray">今日天气晴朗，气温在15℃至25℃之间，东南风。</p>
+            <p class="text-sm text-gray">{{ t('dashboard.weather') }}</p>
           </div>
         </div>
 
@@ -24,7 +24,7 @@
             <div>
               <div class="font-bold color-#ff9a2e text-sm flex items-center">
                 <el-icon class="mr-2px"><Folder /></el-icon>
-                仓库
+                {{ t('dashboard.repository') }}
               </div>
               <div class="mt-3 whitespace-nowrap">
                 <el-link href="https://gitee.com/youlaiorg/vue3-element-admin" target="_blank">
@@ -45,7 +45,7 @@
             <div>
               <div class="font-bold color-#4080ff text-sm flex items-center">
                 <el-icon class="mr-2px"><Document /></el-icon>
-                文档
+                {{ t('dashboard.document') }}
               </div>
               <div class="mt-3 whitespace-nowrap">
                 <el-link href="https://juejin.cn/post/7228990409909108793" target="_blank">
@@ -69,7 +69,7 @@
             <div>
               <div class="font-bold color-#f76560 text-sm flex items-center">
                 <el-icon class="mr-2px"><VideoCamera /></el-icon>
-                视频
+                {{ t('dashboard.video') }}
               </div>
               <div class="mt-3 whitespace-nowrap">
                 <el-link href="https://www.bilibili.com/video/BV1eFUuYyEFj" target="_blank">
@@ -121,8 +121,8 @@
         <el-card shadow="never" class="h-full flex flex-col">
           <template #header>
             <div class="flex-x-between">
-              <span class="text-gray">在线用户</span>
-              <el-tag type="danger" size="small">实时</el-tag>
+              <span class="text-gray">{{ t('dashboard.onlineUsers') }}</span>
+              <el-tag type="danger" size="small">{{ t('dashboard.realtime') }}</el-tag>
             </div>
           </template>
 
@@ -133,18 +133,18 @@
               </span>
               <span v-if="isConnected" class="ml-2 text-xs text-[#67c23a]">
                 <el-icon><Connection /></el-icon>
-                已连接
+                {{ t('dashboard.connected') }}
               </span>
               <span v-else class="ml-2 text-xs text-[#f56c6c]">
                 <el-icon><Failed /></el-icon>
-                未连接
+                {{ t('dashboard.disconnected') }}
               </span>
             </div>
             <div class="i-svg:people w-8 h-8 animate-[pulse_2s_infinite]" />
           </div>
 
           <div class="flex-x-between mt-2 text-sm text-gray">
-            <span>更新时间</span>
+            <span>{{ t('dashboard.updateTime') }}</span>
             <span>{{ formattedTime }}</span>
           </div>
         </el-card>
@@ -176,8 +176,8 @@
             <el-card shadow="never" class="h-full flex flex-col">
               <template #header>
                 <div class="flex-x-between">
-                  <span class="text-gray">访客数(UV)</span>
-                  <el-tag type="success" size="small">日</el-tag>
+                  <span class="text-gray">{{ t('dashboard.visitors') }}</span>
+                  <el-tag type="success" size="small">{{ t('dashboard.daily') }}</el-tag>
                 </div>
               </template>
 
@@ -202,7 +202,7 @@
               </div>
 
               <div class="flex-x-between mt-2 text-sm text-gray">
-                <span>总访客数</span>
+                <span>{{ t('dashboard.totalVisitors') }}</span>
                 <span>{{ Math.round(transitionTotalUvCount) }}</span>
               </div>
             </el-card>
@@ -236,8 +236,8 @@
             <el-card shadow="never" class="h-full flex flex-col">
               <template #header>
                 <div class="flex-x-between">
-                  <span class="text-gray">浏览量(PV)</span>
-                  <el-tag type="primary" size="small">日</el-tag>
+                  <span class="text-gray">{{ t('dashboard.pageViews') }}</span>
+                  <el-tag type="primary" size="small">{{ t('dashboard.daily') }}</el-tag>
                 </div>
               </template>
 
@@ -258,11 +258,11 @@
                     {{ formatGrowthRate(visitStatsData.pvGrowthRate) }}
                   </span>
                 </div>
-                <div class="i-svg:browser w-8 h-8" />
+                <div class="i-svg:page-view w-8 h-8" />
               </div>
 
               <div class="flex-x-between mt-2 text-sm text-gray">
-                <span>总浏览量</span>
+                <span>{{ t('dashboard.totalPageViews') }}</span>
                 <span>{{ Math.round(transitionTotalPvCount) }}</span>
               </div>
             </el-card>
@@ -277,10 +277,11 @@
         <el-card>
           <template #header>
             <div class="flex-x-between">
-              <span>访问趋势</span>
+              <span>{{ t('dashboard.visitTrend') }}</span>
               <el-radio-group v-model="visitTrendDateRange" size="small">
-                <el-radio-button :value="7">近7天</el-radio-button>
-                <el-radio-button :value="30">近30天</el-radio-button>
+                <el-radio-button :value="7">{{ t('dashboard.last7Days') }}</el-radio-button>
+                <el-radio-button :value="30">{{ t('dashboard.last30Days') }}</el-radio-button>
+                <el-radio-button :value="90">{{ t('dashboard.last90Days') }}</el-radio-button>
               </el-radio-group>
             </div>
           </template>
@@ -292,14 +293,14 @@
         <el-card>
           <template #header>
             <div class="flex-x-between">
-              <span class="header-title">最新动态</span>
+              <span class="header-title">{{ t('dashboard.latestUpdates') }}</span>
               <el-link
                 type="primary"
                 underline="never"
                 href="https://gitee.com/youlaiorg/vue3-element-admin/releases"
                 target="_blank"
               >
-                完整记录
+                {{ t('dashboard.fullRecord') }}
                 <el-icon class="link-icon"><TopRight /></el-icon>
               </el-link>
             </div>
@@ -333,7 +334,7 @@
                       target="_blank"
                       underline="never"
                     >
-                      详情
+                      {{ t('dashboard.details') }}
                       <el-icon class="link-icon"><TopRight /></el-icon>
                     </el-link>
                   </div>
@@ -360,6 +361,9 @@ import { formatGrowthRate } from "@/utils";
 import { useTransition, useDateFormat } from "@vueuse/core";
 import { Connection, Failed } from "@element-plus/icons-vue";
 import { useOnlineCount } from "@/hooks/websocket/services/useOnlineCount";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 // 在线用户数量组件相关
 const { onlineUserCount, lastUpdateTime, isConnected } = useOnlineCount();
@@ -532,7 +536,7 @@ const updateVisitTrendChartOptions = (data: VisitTrendVO) => {
       trigger: "axis",
     },
     legend: {
-      data: ["浏览量(PV)", "访客数(UV)"],
+      data: [t('dashboard.pageViews'), t('dashboard.visitors')],
       bottom: 0,
     },
     grid: {
@@ -556,7 +560,7 @@ const updateVisitTrendChartOptions = (data: VisitTrendVO) => {
     },
     series: [
       {
-        name: "浏览量(PV)",
+        name: t('dashboard.pageViews'),
         type: "line",
         data: data.pvList,
         areaStyle: {
@@ -571,7 +575,7 @@ const updateVisitTrendChartOptions = (data: VisitTrendVO) => {
         },
       },
       {
-        name: "访客数(UV)",
+        name: t('dashboard.visitors'),
         type: "line",
         data: data.ipList,
         areaStyle: {
