@@ -18,7 +18,7 @@ envs:
     branch: main
 routes:
   main_env: prod
-  main_app: admin-ui
+  main_app: frontend
 auths:
   apikey:
     type: api_key
@@ -32,7 +32,7 @@ auths:
         name: Authorization
         value: ${{vars.AUTH_TOKEN}}
 apps:
-  admin-ui:
+  frontend:
     type: web_frontend
     envs:
       dev:
@@ -49,7 +49,7 @@ apps:
         provision:
           root_path: dist
           type: nodejs18x
-  admin-api:
+  backend:
     type: web_api
     envs:
       dev:
@@ -88,12 +88,12 @@ services:
         provision:
           type: kv_store_v1
           namespaces:
-          - name: admin-cache
+            - admin-cache
       prod:
         auths:
           - apikey
         provision:
           type: kv_store_v1
           namespaces:
-          - name: admin-cache
-          - name: admin-session 
+            - admin-cache
+            - admin-session 
