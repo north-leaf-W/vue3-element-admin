@@ -135,4 +135,14 @@ export default {
     last30Days: "Last 30 Days",
     last90Days: "Last 90 Days",
   },
+  // Menu search component internationalization
+  menuSearch: {
+    inputPlaceholder: "Enter menu name keyword to search",
+    searchHistory: "Search History",
+    noHistory: "No search history",
+    quickOpen: "Ctrl+K Quick Open",
+    select: "Select",
+    switch: "Switch",
+    close: "Close"
+  },
 };
