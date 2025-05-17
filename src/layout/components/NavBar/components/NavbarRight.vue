@@ -83,15 +83,54 @@ const navbarRightClass = computed(() => {
  * 注销登录
  */
 function logout() {
-  ElMessageBox.confirm("确定注销并退出系统吗？", "提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning",
-    lockScroll: false,
-    confirmButtonClass: "custom-confirm-button",
-    cancelButtonClass: "custom-cancel-button",
-    customClass: "custom-logout-dialog"
-  }).then(() => {
+  // 创建自定义确认对话框
+  const confirmDialogDiv = document.createElement('div');
+  confirmDialogDiv.className = 'custom-confirm-dialog';
+  confirmDialogDiv.innerHTML = `
+    <div class="custom-dialog-overlay"></div>
+    <div class="custom-dialog-container">
+      <div class="custom-dialog-header">
+        <span>提示</span>
+        <span class="custom-dialog-close">&times;</span>
+      </div>
+      <div class="custom-dialog-content">
+        <div class="custom-dialog-icon">
+          <i class="el-icon-warning" style="color: #E6A23C; font-size: 24px;">⚠</i>
+        </div>
+        <div class="custom-dialog-message">确定注销并退出系统吗？</div>
+      </div>
+      <div class="custom-dialog-footer">
+        <button class="custom-dialog-cancel">取消</button>
+        <button class="custom-dialog-confirm">确定</button>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(confirmDialogDiv);
+  
+  // 添加事件处理
+  const overlay = confirmDialogDiv.querySelector('.custom-dialog-overlay');
+  const closeBtn = confirmDialogDiv.querySelector('.custom-dialog-close');
+  const cancelBtn = confirmDialogDiv.querySelector('.custom-dialog-cancel');
+  const confirmBtn = confirmDialogDiv.querySelector('.custom-dialog-confirm');
+  
+  // 关闭对话框函数
+  const closeDialog = () => {
+    document.body.removeChild(confirmDialogDiv);
+  };
+  
+  // 点击关闭按钮
+  closeBtn?.addEventListener('click', closeDialog);
+  
+  // 点击遮罩层关闭
+  overlay?.addEventListener('click', closeDialog);
+  
+  // 点击取消按钮
+  cancelBtn?.addEventListener('click', closeDialog);
+  
+  // 点击确认按钮
+  confirmBtn?.addEventListener('click', () => {
+    closeDialog();
     userStore
       .logout()
       .then(() => {
@@ -174,5 +213,104 @@ function logout() {
     min-width: 60px;
     margin: 0 5px;
   }
+}
+
+/* 自定义对话框样式 */
+:global(.custom-confirm-dialog) {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+}
+
+:global(.custom-dialog-overlay) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+:global(.custom-dialog-container) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 420px;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+:global(.custom-dialog-header) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+:global(.custom-dialog-close) {
+  cursor: pointer;
+  font-size: 22px;
+}
+
+:global(.custom-dialog-content) {
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+}
+
+:global(.custom-dialog-icon) {
+  margin-right: 10px;
+}
+
+:global(.custom-dialog-message) {
+  font-size: 14px;
+  color: #606266;
+  margin-left: 10px;
+}
+
+:global(.custom-dialog-footer) {
+  padding: 10px 20px 20px;
+  text-align: right;
+}
+
+:global(.custom-dialog-cancel),
+:global(.custom-dialog-confirm) {
+  padding: 9px 15px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #dcdfe6;
+  background: white;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: all 0.3s;
+}
+
+:global(.custom-dialog-cancel) {
+  color: #606266;
+}
+
+:global(.custom-dialog-cancel:hover) {
+  color: var(--el-color-primary);
+  border-color: var(--el-color-primary-light-7);
+  background-color: var(--el-color-primary-light-9);
+}
+
+:global(.custom-dialog-confirm) {
+  color: white;
+  background-color: var(--el-color-primary);
+  border-color: var(--el-color-primary);
+}
+
+:global(.custom-dialog-confirm:hover) {
+  background: var(--el-color-primary-light-3);
+  border-color: var(--el-color-primary-light-3);
 }
 </style>
