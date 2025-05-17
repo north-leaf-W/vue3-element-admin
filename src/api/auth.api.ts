@@ -1,6 +1,7 @@
 import request from "@/utils/request";
 
-const AUTH_BASE_URL = "/api/v1/auth";
+// 完全移除BASE_URL中的api前缀，因为已经在环境变量中包含了
+const AUTH_BASE_URL = "/v1/auth"; 
 
 const AuthAPI = {
   /** 登录接口*/
@@ -42,6 +43,10 @@ const AuthAPI = {
 
   /** 获取验证码接口*/
   getCaptcha() {
+    // 调试信息
+    console.log("获取验证码API URL路径:", `${AUTH_BASE_URL}/captcha`);
+    console.log("完整路径:", import.meta.env.VITE_APP_BASE_API + `${AUTH_BASE_URL}/captcha`);
+    
     return request<any, CaptchaInfo>({
       url: `${AUTH_BASE_URL}/captcha`,
       method: "get",
@@ -65,16 +70,16 @@ export interface LoginFormData {
   rememberMe: boolean;
 }
 
-/** 登录响应 */
+/** 登录接口返回结果 */
 export interface LoginResult {
-  /** 访问令牌 */
-  accessToken: string;
-  /** 刷新令牌 */
-  refreshToken: string;
-  /** 令牌类型 */
-  tokenType: string;
-  /** 过期时间(秒) */
-  expiresIn: number;
+  /** 访问token */
+  access_token: string;
+  /** 刷新token */
+  refresh_token: string;
+  /** token类型 */
+  token_type: string;
+  /** 过期时间 (单位: 秒) */
+  expires_in: number;
 }
 
 /** 验证码信息 */
