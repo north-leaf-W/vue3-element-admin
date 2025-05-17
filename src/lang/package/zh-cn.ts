@@ -135,4 +135,14 @@ export default {
     last30Days: "近30天",
     last90Days: "近90天",
   },
+  // 菜单搜索组件国际化
+  menuSearch: {
+    inputPlaceholder: "输入菜单名称关键字搜索",
+    searchHistory: "搜索历史",
+    noHistory: "没有搜索历史",
+    quickOpen: "Ctrl+K 快速打开",
+    select: "选择",
+    switch: "切换",
+    close: "关闭"
+  },
 };
