@@ -76,6 +76,7 @@
           :loading="loading" 
           type="primary" 
           class="w-full login-button" 
+          style="display: block !important; visibility: visible !important; opacity: 1 !important; width: 100%;"
           @click="handleLoginSubmit"
         >
           {{ t("login.login") }}
@@ -118,6 +119,7 @@ import AuthAPI, { type LoginFormData } from "@/api/auth.api";
 import router from "@/router";
 import { useUserStore } from "@/store";
 import CommonWrapper from "@/components/CommonWrapper/index.vue";
+import { ElMessage } from "element-plus";
 
 const { t } = useI18n();
 const userStore = useUserStore();
@@ -187,13 +189,22 @@ const loginRules = computed(() => {
 // 获取验证码
 const codeLoading = ref(false);
 function getCaptcha() {
+  console.log("开始获取验证码...");
   codeLoading.value = true;
   AuthAPI.getCaptcha()
     .then((data) => {
+      console.log("验证码获取成功:", data);
       loginFormData.value.captchaKey = data.captchaKey;
       captchaBase64.value = data.captchaBase64;
     })
-    .finally(() => (codeLoading.value = false));
+    .catch(error => {
+      console.error("验证码获取失败:", error);
+      ElMessage.error("验证码获取失败，请重试");
+    })
+    .finally(() => {
+      console.log("验证码请求结束");
+      codeLoading.value = false;
+    });
 }
 
 // 登录提交处理
