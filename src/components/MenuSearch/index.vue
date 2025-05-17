@@ -129,6 +129,8 @@ import { usePermissionStore } from "@/store";
 import { isExternal } from "@/utils";
 import { RouteRecordRaw, LocationQueryRaw } from "vue-router";
 import { Clock, Close, Delete } from "@element-plus/icons-vue";
+import { translateRouteTitle } from "@/utils/i18n";
+import { useI18n } from "vue-i18n";
 
 const HISTORY_KEY = "menu_search_history";
 const MAX_HISTORY = 5;
@@ -142,6 +144,8 @@ const menuItems = ref<SearchItem[]>([]);
 const searchResults = ref<SearchItem[]>([]);
 const activeIndex = ref(-1);
 const searchHistory = ref<SearchItem[]>([]);
+
+const { t } = useI18n();
 
 interface SearchItem {
   title: string;
@@ -288,15 +292,17 @@ function navigateToRoute(item: SearchItem) {
   }
 }
 
-function loadRoutes(routes: RouteRecordRaw[], parentPath = "") {
+function loadRoutes(routes: RouteRecordRaw[], basePath: string = "") {
   routes.forEach((route) => {
-    const path = route.path.startsWith("/") ? route.path : `${parentPath}/${route.path}`;
-    if (excludedRoutes.value.includes(route.path) || isExternal(route.path)) return;
+    if (route.meta?.hidden) return;
+
+    const path =
+      route.path.startsWith("/") || !basePath ? route.path : `${basePath}/${route.path}`;
 
     if (route.children) {
       loadRoutes(route.children, path);
     } else if (route.meta?.title) {
-      const title = route.meta.title === "dashboard" ? "首页" : route.meta.title;
+      const title = translateRouteTitle(route.meta.title);
       menuItems.value.push({
         title,
         path,
