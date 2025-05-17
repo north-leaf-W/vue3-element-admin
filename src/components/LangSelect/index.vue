@@ -19,6 +19,7 @@
 <script setup lang="ts">
 import { useAppStore } from "@/store/modules/app.store";
 import { LanguageEnum } from "@/enums/settings/locale.enum";
+import { useI18n } from "vue-i18n";
 
 defineProps({
   size: {
@@ -27,13 +28,15 @@ defineProps({
   },
 });
 
+const { t } = useI18n();
+
 const langOptions = [
-  { label: "中文", value: LanguageEnum.ZH_CN },
-  { label: "English", value: LanguageEnum.EN },
+  { label: t('langSelect.chinese'), value: LanguageEnum.ZH_CN },
+  { label: t('langSelect.english'), value: LanguageEnum.EN },
 ];
 
 const appStore = useAppStore();
-const { locale, t } = useI18n();
+const { locale } = useI18n();
 
 /**
  * 处理语言切换
