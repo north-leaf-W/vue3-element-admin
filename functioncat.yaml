@@ -39,10 +39,16 @@ apps:
         build:
           root_path: .
           script: |
-            echo '{ "preinstall": "" }' > ./temp-package.json
+            # 安装pnpm
             npm install -g pnpm --no-package-lock
-            INIT_CWD=/ pnpm install --shamefully-hoist
+            # 临时修改package.json删除preinstall钩子
+            cp package.json package.json.bak
+            sed -i 's/"preinstall": "npx only-allow pnpm"/"preinstall": ""/' package.json
+            # 使用pnpm安装并构建
+            pnpm install --no-frozen-lockfile
             pnpm run build
+            # 恢复package.json
+            mv package.json.bak package.json || true
         provision:
           root_path: dist
           type: nodejs18x
@@ -50,10 +56,16 @@ apps:
         build:
           root_path: .
           script: |
-            echo '{ "preinstall": "" }' > ./temp-package.json
+            # 安装pnpm
             npm install -g pnpm --no-package-lock
-            INIT_CWD=/ pnpm install --shamefully-hoist
+            # 临时修改package.json删除preinstall钩子
+            cp package.json package.json.bak
+            sed -i 's/"preinstall": "npx only-allow pnpm"/"preinstall": ""/' package.json
+            # 使用pnpm安装并构建
+            pnpm install --no-frozen-lockfile
             pnpm run build
+            # 恢复package.json
+            mv package.json.bak package.json || true
         provision:
           root_path: dist
           type: nodejs18x
