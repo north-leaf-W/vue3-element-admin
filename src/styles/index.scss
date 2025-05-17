@@ -62,3 +62,31 @@
   justify-content: flex-end;
   padding-top: 16px;
 }
+
+// 全局按钮显示修复
+.el-button {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+// 消息框按钮修复
+.el-message-box__btns {
+  .el-button {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-width: 60px;
+  }
+}
+
+// 对话框按钮修复
+.el-dialog__footer {
+  .el-button {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
