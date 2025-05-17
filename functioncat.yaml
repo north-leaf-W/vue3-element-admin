@@ -4,7 +4,7 @@
       vars:
         VITE_APP_BASE_API:
           description: "后端API的完整基础URL"
-          value: "https://api.youlai.tech"
+          value: "https://api.youlai.tech/api"
         NODE_ENV:
           description: "Node.js 运行环境"
           value: "production"
